@@ -1,17 +1,27 @@
+version: "3.8"
 services:
   mysql:
-    image: 'mysql:latest'
+    image: mysql:8.0
+    container_name: mysql_banksentinel
+    command: --default-authentication-plugin=mysql_native_password
     environment:
-      - 'MYSQL_DATABASE=mydatabase'
-      - 'MYSQL_PASSWORD=secret'
-      - 'MYSQL_ROOT_PASSWORD=verysecret'
-      - 'MYSQL_USER=myuser'
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: banksentinel
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: admin123
+      MYSQL_ROOT_HOST: '%'
     ports:
-      - '3306'
+      - "3305:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+    restart: unless-stopped
+
   rabbitmq:
-    image: 'rabbitmq:latest'
-    environment:
-      - 'RABBITMQ_DEFAULT_PASS=secret'
-      - 'RABBITMQ_DEFAULT_USER=myuser'
+    image: rabbitmq:3-management
+    container_name: rabbitmq_banksentinel
     ports:
-      - '5672'
+      - "5672:5672"
+      - "15672:15672"
+
+volumes:
+  mysql-data:
