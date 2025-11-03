@@ -42,4 +42,9 @@ public class BankAccountController {
         bankAccountService.deleteBankAccount(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
+    @PutMapping("/update/{id}")
+    public ResponseEntity<BankAccountResponse> updateBankAccount(@PathVariable Long id,@RequestBody BankAccountRequest request) {
+        return bankAccountService.updateBankAccount(id,BankAccountMapper.toBankAccount(request)).map(bankAccount ->
+                ResponseEntity.ok(BankAccountMapper.toBankAccountResponse(bankAccount))).orElse(ResponseEntity.notFound().build());
+    }
 }
