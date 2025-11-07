@@ -1,5 +1,6 @@
 package org.example.banksentinel.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 import org.example.banksentinel.enums.Banks;
@@ -8,7 +9,10 @@ import org.example.banksentinel.enums.TypeAccount;
 import org.hibernate.annotations.CreationTimestamp;
 
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -39,9 +43,14 @@ public class BankAccount {
     private CurrencyType currency;
 
     @Column(nullable = false)
-    private double AccountBalance;
+    private BigDecimal accountBalance;
 
     @CreationTimestamp
     @Column(name = "registration_date")
     private LocalDateTime registrationDate;
+
+    @Builder.Default
+    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
+    private List<Transaction> transactions = new ArrayList<>();
 }
