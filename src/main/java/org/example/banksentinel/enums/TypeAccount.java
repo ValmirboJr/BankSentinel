@@ -4,5 +4,6 @@ public enum TypeAccount {
     CHECKING,
     SAVINGS,
     BUSINESS,
-    JOINT
+    JOINT,
+    CURRENT
 }
