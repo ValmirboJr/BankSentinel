@@ -3,9 +3,9 @@ spring:
     name: bankSentinel
 
   datasource:
-    url: jdbc:mysql://localhost:3305/bankSentinel
-    username: root
-    password: root
+    url: jdbc:mysql://${MYSQL_HOST}:${MYSQL_PORT}/${MYSQL_DATABASE}
+    username: ${MYSQL_USER}
+    password: ${MYSQL_PASSWORD}
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   jpa:
@@ -19,10 +19,26 @@ spring:
     locations: classpath:db/migration
 
   rabbitmq:
-    host: localhost
-    port: 5672
-    username: myuser
-    password: secret
+    host: ${RABBITMQ_HOST}
+    port: ${RABBITMQ_PORT}
+    username: ${RABBITMQ_USER}
+    password: ${RABBITMQ_PASSWORD}
+
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${MAIL_USERNAME}
+    password: ${MAIL_PASSWORD}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
+          connectiontimeout: 5000
+          timeout: 5000
+          writetimeout: 5000
 
 management:
   otlp:
