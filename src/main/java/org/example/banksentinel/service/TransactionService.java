@@ -3,6 +3,7 @@ package org.example.banksentinel.service;
 import org.example.banksentinel.entity.BankAccount;
 import org.example.banksentinel.entity.Transaction;
 import org.example.banksentinel.mapper.TransactionMapper;
+import org.example.banksentinel.messaging.TransactionProducer;
 import org.example.banksentinel.repository.BankAccountRepository;
 import org.example.banksentinel.repository.TransactionRepository;
 import org.example.banksentinel.request.TransactionRequest;
@@ -22,6 +23,9 @@ public class TransactionService {
     @Autowired
     private BankAccountRepository bankAccountRepository;
 
+    @Autowired
+    private TransactionProducer  transactionProducer;
+
     public TransactionResponse createTrn(TransactionRequest request) {
         BankAccount account = bankAccountRepository.findById(request.bank_account_id())
                 .orElseThrow(() -> new RuntimeException("Conta bancária não encontrada"));
@@ -29,8 +33,9 @@ public class TransactionService {
         Transaction transaction = TransactionMapper.toTransaction(request);
         transaction.setAccount(account);
         transaction = transactionRepository.save(transaction);
-
-        return TransactionMapper.toTransactionResponse(transaction);
+        TransactionResponse response = TransactionMapper.toTransactionResponse(transaction);
+        transactionProducer.sendTransactionCreated(response);
+        return response;
     }
 
     public Optional<Transaction> getTrn(Long id) {
