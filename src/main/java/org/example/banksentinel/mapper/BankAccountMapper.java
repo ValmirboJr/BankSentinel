@@ -26,6 +26,7 @@ public class BankAccountMapper {
                 .currency(bankAccountRequest.currency())
                 .accountBalance(bankAccountRequest.accountBalance())
                 .registrationDate(bankAccountRequest.registrationDate())
+                .email(bankAccountRequest.email())
                 .transactions(transactions)
                 .build();
     }
@@ -45,6 +46,7 @@ public class BankAccountMapper {
                 .currency(bankAccount.getCurrency())
                 .accountBalance(bankAccount.getAccountBalance())
                 .registrationDate(bankAccount.getRegistrationDate())
+                .email(bankAccount.getEmail())
                 .transactions(transactions)
                 .build();
     }
