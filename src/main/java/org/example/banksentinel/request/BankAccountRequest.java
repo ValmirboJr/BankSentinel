@@ -12,5 +12,5 @@ import java.util.List;
 
 @Builder
 public record BankAccountRequest(Banks bank, String accountNumber, TypeAccount typeAccount, CurrencyType currency, BigDecimal accountBalance,
-                                 LocalDateTime registrationDate, List<Transaction> transactions) {
+                                 LocalDateTime registrationDate, String email ,List<Transaction> transactions) {
 }
