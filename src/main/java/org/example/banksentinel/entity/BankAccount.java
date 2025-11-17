@@ -49,6 +49,9 @@ public class BankAccount {
     @Column(name = "registration_date")
     private LocalDateTime registrationDate;
 
+    @Column(nullable = false)
+    private String email;
+
     @Builder.Default
     @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
