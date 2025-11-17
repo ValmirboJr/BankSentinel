@@ -1,34 +1,34 @@
 package org.example.banksentinel.messaging;
 
-import com.twilio.rest.api.v2010.account.Message;
-import com.twilio.type.PhoneNumber;
+
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.banksentinel.response.TransactionResponse;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 import java.time.format.DateTimeFormatter;
 
 @Service
+@RequiredArgsConstructor
 @Slf4j
-public class SmsNotificationService {
+public class EmailNotificationService {
 
-    @Value("${spring.datasource.twilio.phone-from}")
-    private String phoneFrom;
+    private final JavaMailSender mailSender;
 
-    public void sendTransactionNotification(TransactionResponse transaction, String customerPhone) {
+    public void sendTransactionNotification(TransactionResponse transaction, String Email) {
         try {
-            String messageBody = buildTransactionMessage(transaction);
+            SimpleMailMessage message = new SimpleMailMessage();
+            message.setTo(Email);
+            message.setSubject("🏦 BankSentinel - New Transaction");
+            message.setText(buildTransactionMessage(transaction));
 
-            Message message = Message.creator(
-                    new PhoneNumber(customerPhone),
-                    new PhoneNumber(phoneFrom),
-                    messageBody
-            ).create();
+            mailSender.send(message);
 
-            log.info("SMS send to sucess! SID: {}", message.getSid());
+            log.info("Email invited: {}", Email);
 
         } catch (Exception e) {
-            log.error("Error to send WhatsApp: {}", e.getMessage(), e);
+            log.error("Erro envited email: {}", e.getMessage(), e);
         }
     }
 
