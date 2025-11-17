@@ -12,5 +12,5 @@ import java.util.List;
 
 @Builder
 public record BankAccountResponse(Long id, Banks banks, String accountNumber, TypeAccount typeAccount, CurrencyType currency, BigDecimal accountBalance,
-                                  LocalDateTime registrationDate, List<TransactionResponse> transactions) {
+                                  LocalDateTime registrationDate,String email, List<TransactionResponse> transactions) {
 }
